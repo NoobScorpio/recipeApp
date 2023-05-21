@@ -1,0 +1,193 @@
+@startuml
+set namespaceSeparator ::
+
+abstract class "recipe_app::controllers::repo_controller.dart::UserRepository" {
+  +Future<bool> logIn()
+  +Future<bool> signUp()
+  +Future<bool> updateUser()
+  +Future<bool> logoutUser()
+}
+
+class "recipe_app::controllers::repo_controller.dart::UserRepositoryImpl" {
+  +Future<bool> logIn()
+  +Future<bool> signUp()
+  +Future<bool> updateUser()
+  +Future<bool> logoutUser()
+}
+
+"recipe_app::controllers::repo_controller.dart::UserRepository" <|-- "recipe_app::controllers::repo_controller.dart::UserRepositoryImpl"
+
+class "recipe_app::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "recipe_app::main.dart::MyApp"
+
+class "recipe_app::main.dart::MyHomePage" {
+  +String title
+  +State<MyHomePage> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "recipe_app::main.dart::MyHomePage"
+
+class "recipe_app::main.dart::_MyHomePageState" {
+  -int _counter
+  -void _incrementCounter()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "recipe_app::main.dart::_MyHomePageState"
+
+class "recipe_app::models::myuser.dart::MyUser" {
+  +String? name
+  +String? email
+  +String? dob
+  +List<Recipe>? meals
+  +List<String>? ingredients
+  +Map<String, dynamic> toJson()
+}
+
+class "recipe_app::models::recipe.dart::Recipe" {
+  +String? name
+  +String? instructions
+  +String? imageURL
+  +String? category
+  +List<String>? ingredients
+  +Map<String, dynamic> toJson()
+}
+
+class "recipe_app::screens::home_screen.dart::HomeScreen" {
+  +State<HomeScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "recipe_app::screens::home_screen.dart::HomeScreen"
+
+class "recipe_app::screens::home_screen.dart::_HomeScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "recipe_app::screens::home_screen.dart::_HomeScreenState"
+
+class "recipe_app::screens::login_screen.dart::LoginScreen" {
+  +State<LoginScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "recipe_app::screens::login_screen.dart::LoginScreen"
+
+class "recipe_app::screens::login_screen.dart::_LoginScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "recipe_app::screens::login_screen.dart::_LoginScreenState"
+
+class "recipe_app::screens::profile_screen.dart::ProfileScreen" {
+  +State<ProfileScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "recipe_app::screens::profile_screen.dart::ProfileScreen"
+
+class "recipe_app::screens::profile_screen.dart::_ProfileScreenState" {
+  -AnimationController _controller
+  +void initState()
+  +void dispose()
+  +Widget build()
+}
+
+"recipe_app::screens::profile_screen.dart::_ProfileScreenState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+"flutter::src::widgets::framework.dart::State" <|-- "recipe_app::screens::profile_screen.dart::_ProfileScreenState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin" <|-- "recipe_app::screens::profile_screen.dart::_ProfileScreenState"
+
+class "recipe_app::screens::recipe_screen.dart::RecipeScreen" {
+  +State<RecipeScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "recipe_app::screens::recipe_screen.dart::RecipeScreen"
+
+class "recipe_app::screens::recipe_screen.dart::_RecipeScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "recipe_app::screens::recipe_screen.dart::_RecipeScreenState"
+
+class "recipe_app::screens::search_screen.dart::SearchScreen" {
+  +State<SearchScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "recipe_app::screens::search_screen.dart::SearchScreen"
+
+class "recipe_app::screens::search_screen.dart::_SearchScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "recipe_app::screens::search_screen.dart::_SearchScreenState"
+
+class "recipe_app::screens::singin_screen.dart::SigninScreen" {
+  +State<SigninScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "recipe_app::screens::singin_screen.dart::SigninScreen"
+
+class "recipe_app::screens::singin_screen.dart::_SigninScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "recipe_app::screens::singin_screen.dart::_SigninScreenState"
+
+class "recipe_app::screens::welcome_screen.dart::WelcomeScreen" {
+  +State<WelcomeScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "recipe_app::screens::welcome_screen.dart::WelcomeScreen"
+
+class "recipe_app::screens::welcome_screen.dart::_WelcomeScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "recipe_app::screens::welcome_screen.dart::_WelcomeScreenState"
+
+class "recipe_app::states::user_cubit.dart::UserCubit" {
+  +UserRepository userRepository
+  +Future<bool> loginUser()
+  +Future<bool> signInUser()
+  +Future<void> getUser()
+  +Future<bool> updateUser()
+  +Future<bool> logoutUser()
+}
+
+"recipe_app::states::user_cubit.dart::UserCubit" o-- "recipe_app::controllers::repo_controller.dart::UserRepository"
+"bloc::src::cubit.dart::Cubit" <|-- "recipe_app::states::user_cubit.dart::UserCubit"
+
+abstract class "recipe_app::states::user_state.dart::UserState" {
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "recipe_app::states::user_state.dart::UserState"
+
+class "recipe_app::states::user_state.dart::UserInitialState" {
+  +List<Object> props
+}
+
+"recipe_app::states::user_state.dart::UserState" <|-- "recipe_app::states::user_state.dart::UserInitialState"
+
+class "recipe_app::states::user_state.dart::UserLoadingState" {
+  +List<Object> props
+}
+
+"recipe_app::states::user_state.dart::UserState" <|-- "recipe_app::states::user_state.dart::UserLoadingState"
+
+class "recipe_app::states::user_state.dart::UserLoadedState" {
+  +MyUser user
+  +List<Object> props
+}
+
+"recipe_app::states::user_state.dart::UserLoadedState" o-- "recipe_app::models::myuser.dart::MyUser"
+"recipe_app::states::user_state.dart::UserState" <|-- "recipe_app::states::user_state.dart::UserLoadedState"
+
+class "recipe_app::states::user_state.dart::UserErrorState" {
+  +String message
+  +List<Object> props
+}
+
+"recipe_app::states::user_state.dart::UserState" <|-- "recipe_app::states::user_state.dart::UserErrorState"
+
+
+@enduml
