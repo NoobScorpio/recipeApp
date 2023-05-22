@@ -7,24 +7,24 @@ import 'package:recipe_app/screens/welcome_screen.dart';
 import 'package:recipe_app/widgets/primary_button.dart';
 import 'package:recipe_app/widgets/primary_textfield.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   UserRepository repo = UserRepositoryImpl();
   @override
   Widget build(BuildContext context) {
-    String _email = "", _password = "";
+    String _email = "", _password = "", _userName = "";
     return Scaffold(
       backgroundColor: Constants.PRIMARY_COLOR,
       appBar: AppBar(
         backgroundColor: Constants.SECONDARY_COLOR,
-        title: const Text("Login Screen"),
+        title: const Text("Signup Screen"),
       ),
       body: ListView(
         shrinkWrap: true,
@@ -34,16 +34,29 @@ class _LoginScreenState extends State<LoginScreen> {
             height: MediaQuery.of(context).size.height * 0.075,
           ),
           Center(
-            child: Card(
-              color: Constants.PRIMARY_COLOR,
-              elevation: 8.0,
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Form(
-                  key: _formKey,
+            child: Form(
+              key: _formKey,
+              child: Card(
+                color: Constants.PRIMARY_COLOR,
+                elevation: 8.0,
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: <Widget>[
                       Constants.getLogo(height: 150, width: 150),
+                      PrimaryTextField(
+                        title: "Name",
+                        iconData: Icons.person,
+                        validator: (input) {
+                          if (input!.length < 3) {
+                            return "Username too short";
+                          }
+                        },
+                        onSaved: (input) => _userName = input ?? "",
+                      ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
                       PrimaryTextField(
                         title: "Email",
                         iconData: Icons.person,
@@ -72,13 +85,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 25.0,
                       ),
                       PrimaryButton(
-                        title: "Log In",
+                        title: "Sign Up",
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            bool loggedIn = await repo.logIn(
-                                email: _email, password: _password);
-                            if (loggedIn) {
+                            bool signedIn = await repo.signUp(
+                                email: _email,
+                                password: _password,
+                                userName: _userName);
+                            if (signedIn) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
