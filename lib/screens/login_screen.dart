@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:recipe_app/constants.dart';
 import 'package:recipe_app/controllers/repo_controller.dart';
+import 'package:recipe_app/screens/home_screen.dart';
 import 'package:recipe_app/screens/welcome_screen.dart';
 import 'package:recipe_app/widgets/primary_button.dart';
 import 'package:recipe_app/widgets/primary_textfield.dart';
@@ -82,8 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const WelcomeScreen()),
+                                    builder: (context) => const HomeScreen()),
                               );
                             } else {}
                           }

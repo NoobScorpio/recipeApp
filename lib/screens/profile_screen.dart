@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/src/animation/animation_controller.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/src/widgets/ticker_provider.dart';
+import 'package:recipe_app/constants.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -28,6 +30,15 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: Constants.PRIMARY_COLOR,
+      appBar: AppBar(
+        title: const Text(
+          "Profile",
+          style: TextStyle(color: Constants.PRIMARY_COLOR),
+        ),
+        backgroundColor: Constants.SECONDARY_COLOR,
+      ),
+    );
   }
 }
