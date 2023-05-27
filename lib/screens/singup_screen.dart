@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/constants.dart';
 import 'package:recipe_app/controllers/repo_controller.dart';
+import 'package:recipe_app/screens/screen_handler.dart';
 import 'package:recipe_app/screens/welcome_screen.dart';
+import 'package:recipe_app/states/user_cubit.dart';
 import 'package:recipe_app/widgets/primary_button.dart';
 import 'package:recipe_app/widgets/primary_textfield.dart';
 
@@ -89,18 +92,23 @@ class _SignupScreenState extends State<SignupScreen> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            bool signedIn = await repo.signUp(
-                                email: _email,
-                                password: _password,
-                                userName: _userName);
-                            if (signedIn) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const WelcomeScreen()),
-                              );
-                            } else {}
+
+                            await BlocProvider.of<UserCubit>(context)
+                                .signUpUser(_email, _password, _userName)
+                                .then((value) {
+                              if (value) {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                  builder: (context) {
+                                    return BlocProvider(
+                                      create: (context) => UserCubit(
+                                          userRepository: UserRepositoryImpl()),
+                                      child: const ScreenHandler(),
+                                    );
+                                  },
+                                ), (Route<dynamic> route) => false);
+                              } else {}
+                            });
                           }
                         },
                       ),

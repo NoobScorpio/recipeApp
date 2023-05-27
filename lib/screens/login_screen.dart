@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/constants.dart';
 import 'package:recipe_app/controllers/repo_controller.dart';
+import 'package:recipe_app/models/myuser.dart';
 import 'package:recipe_app/screens/home_screen.dart';
+import 'package:recipe_app/screens/screen_handler.dart';
 import 'package:recipe_app/screens/welcome_screen.dart';
+import 'package:recipe_app/states/user_cubit.dart';
+import 'package:recipe_app/states/user_state.dart';
 import 'package:recipe_app/widgets/primary_button.dart';
 import 'package:recipe_app/widgets/primary_textfield.dart';
 
@@ -72,23 +77,36 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      PrimaryButton(
-                        title: "Log In",
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            bool loggedIn = await repo.logIn(
-                                email: _email, password: _password);
-                            if (loggedIn) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()),
-                              );
-                            } else {}
-                          }
-                        },
-                      ),
+                      BlocBuilder<UserCubit, UserState>(
+                          builder: (context, state) {
+                        return PrimaryButton(
+                          title: "Log In",
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              debugPrint("LOGGING IN");
+                              await BlocProvider.of<UserCubit>(context)
+                                  .loginUser(_email, _password)
+                                  .then((value) {
+                                debugPrint("LOGGING IN $value");
+                                if (value) {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                    builder: (context) {
+                                      return BlocProvider(
+                                        create: (context) => UserCubit(
+                                            userRepository:
+                                                UserRepositoryImpl()),
+                                        child: const ScreenHandler(),
+                                      );
+                                    },
+                                  ), (Route<dynamic> route) => false);
+                                } else {}
+                              });
+                            }
+                          },
+                        );
+                      }),
                       const SizedBox(
                         height: 15.0,
                       ),

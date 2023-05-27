@@ -8,22 +8,23 @@ class PrimaryTextField extends StatelessWidget {
       this.iconData,
       this.validator,
       this.onSaved,
-      this.obscure})
+      this.obscure,
+      this.controller})
       : super(key: key);
   final String? title;
   final IconData? iconData;
   final String? Function(String?)? validator;
   final bool? obscure;
   final void Function(String?)? onSaved;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller ?? TextEditingController(),
       obscureText: obscure ?? false,
       validator: validator ?? (input) {},
       onSaved: onSaved,
-      style: const TextStyle(
-        color: Constants.SECONDARY_COLOR,
-      ),
+      style: const TextStyle(color: Constants.SECONDARY_COLOR, fontSize: 18),
       cursorColor: Constants.SECONDARY_COLOR,
       decoration: InputDecoration(
           focusedBorder: const UnderlineInputBorder(

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/constants.dart';
+import 'package:recipe_app/controllers/repo_controller.dart';
 import 'package:recipe_app/screens/login_screen.dart';
 import 'package:recipe_app/screens/singup_screen.dart';
+import 'package:recipe_app/states/user_cubit.dart';
 import 'package:recipe_app/widgets/primary_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -12,6 +15,13 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<UserCubit>(context).getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +55,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
+                      builder: (context) {
+                        return BlocProvider(
+                          create: (context) =>
+                              UserCubit(userRepository: UserRepositoryImpl()),
+                          child: const LoginScreen(),
+                        );
+                      },
+                    ),
                   );
                 },
               ),
@@ -58,7 +75,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SignupScreen()),
+                      builder: (context) {
+                        return BlocProvider(
+                          create: (context) =>
+                              UserCubit(userRepository: UserRepositoryImpl()),
+                          child: const SignupScreen(),
+                        );
+                      },
+                    ),
                   );
                 },
               ),
