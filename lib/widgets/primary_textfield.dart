@@ -9,7 +9,10 @@ class PrimaryTextField extends StatelessWidget {
       this.validator,
       this.onSaved,
       this.obscure,
-      this.controller})
+      this.controller,
+      this.prefix,
+      this.suffix,
+      this.suffixOnTap})
       : super(key: key);
   final String? title;
   final IconData? iconData;
@@ -17,6 +20,8 @@ class PrimaryTextField extends StatelessWidget {
   final bool? obscure;
   final void Function(String?)? onSaved;
   final TextEditingController? controller;
+  final bool? prefix, suffix;
+  final VoidCallback? suffixOnTap;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -31,10 +36,21 @@ class PrimaryTextField extends StatelessWidget {
             borderSide: BorderSide(color: Constants.SECONDARY_COLOR),
           ),
           focusColor: Constants.SECONDARY_COLOR,
-          prefixIcon: Icon(
-            iconData ?? Icons.text_fields,
-            color: Constants.SECONDARY_COLOR,
-          ),
+          prefixIcon: prefix == null || prefix == true
+              ? Icon(
+                  iconData ?? Icons.text_fields,
+                  color: Constants.SECONDARY_COLOR,
+                )
+              : null,
+          suffixIcon: suffix == null || suffix == false
+              ? null
+              : InkWell(
+                  onTap: suffixOnTap,
+                  child: Icon(
+                    iconData ?? Icons.text_fields,
+                    color: Constants.SECONDARY_COLOR,
+                  ),
+                ),
           labelText: title ?? "",
           labelStyle: const TextStyle(color: Constants.SECONDARY_COLOR)),
     );
